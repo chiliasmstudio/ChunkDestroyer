@@ -1,0 +1,4 @@
+name: ChunkDestroyer
+version: '1.0.0'
+main: com.chiliasmstudio.chunkDestroyer.ChunkDestroyer
+api-version: '1.21'
