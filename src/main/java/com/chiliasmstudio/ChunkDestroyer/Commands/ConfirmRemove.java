@@ -14,6 +14,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.threadedregions.scheduler.RegionScheduler;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -51,18 +52,40 @@ public class ConfirmRemove {
             }
         }
 
-        EconomyIO.takeBalance(player,32500D);
-        player.sendRichMessage("<green>已從您的帳戶扣除: 32500</green>");
-        player.sendRichMessage("<green>確認執行, 注意安全!</green>");
 
 
-        for (int y = 64; y >= -63; y--) {
-            for (int x = 0; x <= 15; x++) {
-                for (int z = 0; z <= 15; z++) {
-                    loc.getChunk().getBlock(x, y, z).setType(Material.AIR);
+        if(loc.getWorld().getEnvironment().equals(World.Environment.NORMAL)){
+            EconomyIO.takeBalance(player,32500D);
+            player.sendRichMessage("<green>已從您的帳戶扣除: 32500</green>");
+            player.sendRichMessage("<green>確認執行, 注意安全!</green>");
+
+            for (int y = 64; y >= -63; y--) {
+                for (int x = 0; x <= 15; x++) {
+                    for (int z = 0; z <= 15; z++) {
+                        loc.getChunk().getBlock(x, y, z).setType(Material.AIR);
+                    }
                 }
             }
+        }else if(loc.getWorld().getEnvironment().equals(World.Environment.NETHER)){
+            EconomyIO.takeBalance(player,32500D);
+            player.sendRichMessage("<green>已從您的帳戶扣除: 32500</green>");
+            player.sendRichMessage("<green>確認執行, 注意安全!</green>");
+
+            for (int y = 127; y >= 1; y--) {
+                for (int x = 0; x <= 15; x++) {
+                    for (int z = 0; z <= 15; z++) {
+                        loc.getChunk().getBlock(x, y, z).setType(Material.AIR);
+                    }
+                }
+            }
+        }else if(loc.getWorld().getEnvironment().equals(World.Environment.THE_END)){
+            sender.sendRichMessage("<red>Illegal operation</red>");
+            return 0;
         }
+
+
+
+
 
         player.sendRichMessage("<green>作業完成!</green>");
         return Command.SINGLE_SUCCESS;
